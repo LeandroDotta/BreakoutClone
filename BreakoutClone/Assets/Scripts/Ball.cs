@@ -9,9 +9,8 @@ public class Ball : MonoBehaviour {
 
     private Rigidbody2D rb2d;
 
-
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         rb2d = GetComponent<Rigidbody2D>();
 	}
 
@@ -33,9 +32,7 @@ public class Ball : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Vector2 normal = collision.contacts[0].normal;
-
         print(collision.contacts.Length);
-
         direction = Vector2.Reflect(direction, normal).normalized;
     }
 }

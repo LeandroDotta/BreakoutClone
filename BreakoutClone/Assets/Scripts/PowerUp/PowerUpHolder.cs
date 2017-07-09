@@ -33,4 +33,14 @@ public class PowerUpHolder : MonoBehaviour {
         powerUpInstance.name = powerUp.name;
         powerUpInstance.transform.SetParent(transform);
     }
+
+    public void Remove<T>()
+    {
+        TimedPowerUp powerUp = gameObject.GetComponentInChildren<T>() as TimedPowerUp;
+
+        if(powerUp != null)
+        {
+            powerUp.Interrupt();
+        }
+    }
 }

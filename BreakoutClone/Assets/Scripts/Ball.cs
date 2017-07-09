@@ -6,7 +6,6 @@ public class Ball : MonoBehaviour {
 
     public float speed;
     public Vector2 direction;
-    public Platform platform;
 
     private Vector2 startPosition;
     private Rigidbody2D rb2d;
@@ -27,24 +26,21 @@ public class Ball : MonoBehaviour {
             Move();
     }
 
-    // Update is called once per frame
-    void Update () {
-        if (Input.GetButtonDown("Action") && IsLocked)
-            Launch();
-	}
-
     private void Move()
     {
         rb2d.MovePosition(rb2d.position + direction * speed * Time.fixedDeltaTime);
     }
 
-    private void Launch()
+    public void Launch()
     {
-        // Direção aleatória
-        direction = Platform.Directions[Random.Range(0, Platform.Directions.Length)];
-
         transform.SetParent(null);
         IsLocked = false;
+    }
+
+    public void Launch(Vector2 direction)
+    {
+        this.direction = direction;
+        this.Launch();
     }
 
     public void ResetPosition()
@@ -52,7 +48,7 @@ public class Ball : MonoBehaviour {
         IsLocked = true;
 
         transform.position = startPosition;
-        transform.SetParent(platform.transform);
+        transform.SetParent(StageManager.Instance.platform.transform);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -63,6 +59,12 @@ public class Ball : MonoBehaviour {
         {
             Platform platform = coll.gameObject.GetComponent<Platform>();
             direction = platform.GetDirection(collision.contacts[0].point);
+
+            if(platform.IsSticky)
+            {
+                IsLocked = true;
+                transform.SetParent(platform.transform);
+            }
         }
         else
         {

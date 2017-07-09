@@ -24,6 +24,13 @@ public abstract class TimedPowerUp : PowerUp {
 		countdown += time;
 	}
 
+	public void Interrupt()
+	{
+		StopCoroutine("PowerUpCoroutine");
+		PowerUpEnd();
+		Destroy(gameObject);
+	}
+
 	protected abstract void PowerUpStart();
 	protected abstract void PowerUpEnd();
 	protected IEnumerator PowerUpCoroutine(float time)

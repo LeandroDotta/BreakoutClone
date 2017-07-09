@@ -25,7 +25,6 @@ public class PowerUpApplier : MonoBehaviour {
 	{
 		if(other.gameObject.CompareTag("Player"))
 		{
-			
 			PowerUpHolder.Instance.Add(powerUpPrefab);
 			Destroy(gameObject);
 		}

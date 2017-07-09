@@ -14,6 +14,7 @@ public class StageManager : MonoBehaviour {
     private int brickCount;
 
     public static StageManager Instance { get; set; }
+    public bool IsFirstLaunch { get; set; }
 
     void Awake()
     {
@@ -31,12 +32,16 @@ public class StageManager : MonoBehaviour {
 
         SetScoreText(GameManager.Instance.CurrentGame.Score);
         SetLifeCountText(GameManager.Instance.CurrentGame.LifeCount);
+
+        Cursor.visible = false;
     }
 
     public void ResetBall()
     {
         platform.ResetPosition();
         ball.ResetPosition();
+
+        IsFirstLaunch = true;
     }
 
     public void SetScoreText(int score)
@@ -60,5 +65,10 @@ public class StageManager : MonoBehaviour {
 
         if(brickCount <= 0)
             GameManager.Instance.GameOver();
+    }
+
+    void OnDestroy()
+    {
+        Cursor.visible = true;
     }
 }

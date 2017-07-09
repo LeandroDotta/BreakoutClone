@@ -23,7 +23,7 @@ public class PlatformController : MonoBehaviour {
     private void Update()
     {
         // Movimento ao tocar na tela (para smartphones e tablets)
-        if(Input.GetMouseButton(0)){
+        if(Input.touchCount == 1){
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             if(Mathf.Abs(mousePos.x - transform.position.x) > 0.3f){
@@ -43,6 +43,22 @@ public class PlatformController : MonoBehaviour {
             Vector2 direction = new Vector2(axisHorizontal, 0);   
             Move(direction);
         }
+
+        // Lançar a bola
+        if((Input.GetButtonDown("Action") || Input.GetMouseButtonUp(0)) && StageManager.Instance.ball.IsLocked)
+        {
+            if(StageManager.Instance.IsFirstLaunch)
+            {
+                // Primeiro lançamento é realizado em uma direção aleatória
+                StageManager.Instance.ball.Launch(Platform.Directions[Random.Range(0, Platform.Directions.Length)]);
+                StageManager.Instance.IsFirstLaunch = false;
+            }
+            else
+            {
+                StageManager.Instance.ball.Launch();
+            }
+        }
+            
     }
 
     private void Move(Vector2 direction)

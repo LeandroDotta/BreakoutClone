@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlowPowerUp : TimedPowerUp 
+public class FastPowerUp : TimedPowerUp 
 {
 	public float speed;
+
 	private Ball ball;
 	private float ballDefaultSpeed;
 
 	new void Start()
 	{
-		PowerUpHolder.Instance.Remove<FastPowerUp>();
-		
+		PowerUpHolder.Instance.Remove<SlowPowerUp>();
+
 		base.Start();
 	}
 
@@ -27,3 +28,4 @@ public class SlowPowerUp : TimedPowerUp
 		ball.speed = ballDefaultSpeed;
 	}
 }
+

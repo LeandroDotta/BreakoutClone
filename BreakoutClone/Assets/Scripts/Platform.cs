@@ -19,13 +19,14 @@ public class Platform : MonoBehaviour {
         new Vector2(1, 1).normalized,
         new Vector2(1, 0.5f).normalized
     };
+    public static Vector2[] Directions { get { return directions; } }
+    
+    public bool IsSticky { get; set; }
 
     private Vector2 startPosition;
     private Collider2D coll;
     private SpriteRenderer spriteRenderer;
     private PlatformController controller;
-
-    public static Vector2[] Directions { get { return directions; } }
 
     void Start()
     {

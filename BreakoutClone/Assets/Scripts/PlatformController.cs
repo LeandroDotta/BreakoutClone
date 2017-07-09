@@ -16,24 +16,38 @@ public class PlatformController : MonoBehaviour {
     {
         coll = GetComponent<Collider2D>();
 
-        minX = leftWall.bounds.max.x + coll.bounds.extents.x;
-        maxX = rightWall.bounds.min.x - coll.bounds.extents.x;
+        minX = leftWall.bounds.max.x;
+        maxX = rightWall.bounds.min.x;
     }
 
     private void Update()
     {
-        Move();
-    }
+        // Movimento ao tocar na tela (para smartphones e tablets)
+        if(Input.GetMouseButton(0)){
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-    private void Move()
-    {
+            if(Mathf.Abs(mousePos.x - transform.position.x) > 0.3f){
+                Vector2 direction = new Vector2(mousePos.x - transform.position.x, 0).normalized;
+                Move(direction);
+            }
+        }
+        
+        // Movimento pelo teclado ou mouse
         float axisHorizontal = Input.GetAxisRaw("Horizontal");
+
+        if(axisHorizontal == 0) 
+            axisHorizontal = Input.GetAxisRaw("Mouse X");
+        
         if (axisHorizontal != 0)
         {
-            Vector2 direction = new Vector2(axisHorizontal, 0);
-
-            transform.Translate(direction * speed * Time.deltaTime);
-            transform.position = new Vector2(Mathf.Clamp(transform.position.x, minX, maxX), transform.position.y);
+            Vector2 direction = new Vector2(axisHorizontal, 0);   
+            Move(direction);
         }
+    }
+
+    private void Move(Vector2 direction)
+    {
+        transform.Translate(direction * speed * Time.deltaTime);
+        transform.position = new Vector2(Mathf.Clamp(transform.position.x, minX + coll.bounds.extents.x, maxX - coll.bounds.extents.x), transform.position.y);
     }
 }

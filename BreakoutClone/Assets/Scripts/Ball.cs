@@ -69,6 +69,5 @@ public class Ball : MonoBehaviour {
             Vector2 normal = collision.contacts[0].normal;
             direction = Vector2.Reflect(direction, normal).normalized;
         }
-        
     }
 }

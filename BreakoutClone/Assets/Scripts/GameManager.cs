@@ -5,8 +5,35 @@ using UnityEngine.SceneManagement;
 
 public class Game
 {
-    public int Score { get; set; }
-    public int LifeCount { get; set; }
+    private int _score;
+    private int _lifeCount;
+
+    public int Score { 
+        get
+        {
+            return _score;
+        }
+        set
+        {
+            _score = value;
+
+            if(StageManager.Instance != null)
+                StageManager.Instance.SetScoreText(value);
+        }
+    }
+    public int LifeCount { 
+        get
+        {
+            return _lifeCount;
+        }
+        set
+        {
+            _lifeCount = value;
+
+            if(StageManager.Instance != null)
+                StageManager.Instance.SetLifeCountText(value);
+        } 
+    }
 
     public Game(int lifeCount)
     {

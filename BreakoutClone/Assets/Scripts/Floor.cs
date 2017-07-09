@@ -9,7 +9,6 @@ public class Floor : MonoBehaviour
         if (collider.CompareTag("Ball"))
         {
             GameManager.Instance.CurrentGame.LifeCount--;
-            StageManager.Instance.SetLifeCountText(GameManager.Instance.CurrentGame.LifeCount);
             StageManager.Instance.ResetBall();
         }
     }

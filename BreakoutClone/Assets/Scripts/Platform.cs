@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Platform : MonoBehaviour {
+public class Platform : MonoBehaviour {    
+
+    public float minSize;
+    public float maxSize;
+
     private static Vector2[] directions = new Vector2[]
     {
         new Vector2(-1, 0.5f).normalized,
@@ -15,15 +19,20 @@ public class Platform : MonoBehaviour {
         new Vector2(1, 1).normalized,
         new Vector2(1, 0.5f).normalized
     };
-    public static Vector2[] Directions { get { return directions; } }
 
     private Vector2 startPosition;
     private Collider2D coll;
+    private SpriteRenderer spriteRenderer;
+    private PlatformController controller;
+
+    public static Vector2[] Directions { get { return directions; } }
 
     void Start()
     {
         startPosition = transform.position;
         coll = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        controller = GetComponent<PlatformController>();
     }
 
     public void ResetPosition()
@@ -52,7 +61,35 @@ public class Platform : MonoBehaviour {
         return directions[directions.Length - 1];
     }
 
-    private void OnDrawGizmos()
+    public void GrowUp()
+    {
+        StartCoroutine("ResizeCoroutine", Mathf.Clamp(spriteRenderer.size.x + 1, minSize, maxSize));
+    }
+
+    public void Lower()
+    {
+        StartCoroutine("ResizeCoroutine", Mathf.Clamp(spriteRenderer.size.x - 1, minSize, maxSize));
+    }
+
+    private IEnumerator ResizeCoroutine(float resizeTo)
+    {
+        float duration = 0.3f;
+        float timer = 0;
+        
+        float startSize = spriteRenderer.size.x;
+
+        while(spriteRenderer.size.x != resizeTo)
+        {
+            Vector2 newSize = new Vector2(Mathf.Lerp(startSize, resizeTo, timer), spriteRenderer.size.y);
+            spriteRenderer.size = newSize;
+
+            yield return new WaitForEndOfFrame();
+
+            timer += Time.deltaTime / duration;
+        }
+    }
+
+    private void OnDrawGizmosSelected()
     {
         Bounds collBounds = GetComponent<Collider2D>().bounds;
         float sectionSize = collBounds.size.x / directions.Length;

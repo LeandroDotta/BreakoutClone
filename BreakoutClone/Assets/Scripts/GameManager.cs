@@ -69,13 +69,9 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
-    }
 
-    private void Start()
-    {
         CurrentGame = new Game(lifes);
     }
-
 
     public void RestartScene()
     {

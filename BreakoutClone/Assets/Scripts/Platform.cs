@@ -23,22 +23,28 @@ public class Platform : MonoBehaviour {
     
     public bool IsSticky { get; set; }
 
+    private float defaultSize;
     private Vector2 startPosition;
     private Collider2D coll;
     private SpriteRenderer spriteRenderer;
-    private PlatformController controller;
 
     void Start()
     {
         startPosition = transform.position;
         coll = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        controller = GetComponent<PlatformController>();
+
+        defaultSize = spriteRenderer.size.x;
     }
 
     public void ResetPosition()
     {
         transform.position = startPosition;
+    }
+
+    public void ResetSize()
+    {
+        spriteRenderer.size = new Vector2(defaultSize, spriteRenderer.size.y);
     }
 
     public Vector2 GetDirection(Vector2 contactPoint)

@@ -15,6 +15,7 @@ public class StageManager : MonoBehaviour {
 
     public static StageManager Instance { get; set; }
     public bool IsFirstLaunch { get; set; }
+    public Transform Barrier { get; set; }
 
     void Awake()
     {
@@ -29,6 +30,7 @@ public class StageManager : MonoBehaviour {
     void Start()
     {
         brickCount = GameObject.FindGameObjectsWithTag("Brick").Length;
+        Barrier = transform.Find("Barrier");
 
         SetScoreText(GameManager.Instance.CurrentGame.Score);
         SetLifeCountText(GameManager.Instance.CurrentGame.LifeCount);
@@ -38,10 +40,24 @@ public class StageManager : MonoBehaviour {
 
     public void ResetBall()
     {
+        PowerUpHolder.Instance.Clear();
+        RemovePowerUpsAtScreen();
+
         platform.ResetPosition();
+        platform.ResetSize();
         ball.ResetPosition();
 
         IsFirstLaunch = true;
+    }
+
+    public void RemovePowerUpsAtScreen()
+    {
+        GameObject[] bricks = GameObject.FindGameObjectsWithTag("BrickPowerUp");
+
+        foreach(GameObject obj in bricks)
+        {
+            Destroy(obj);
+        }
     }
 
     public void SetScoreText(int score)

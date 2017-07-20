@@ -43,4 +43,14 @@ public class PowerUpHolder : MonoBehaviour {
             powerUp.Interrupt();
         }
     }
+
+    public void Clear()
+    {
+        TimedPowerUp[] powerUps = gameObject.GetComponentsInChildren<TimedPowerUp>();
+
+        foreach(TimedPowerUp tpu in powerUps)
+        {
+            tpu.Interrupt();
+        }
+    }
 }

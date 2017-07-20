@@ -54,6 +54,7 @@ public class Ball : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Collider2D coll = collision.collider;
+        AudioManager.Instance.Play(AudioManager.Instance.sfxBounce);
 
         if (coll.CompareTag("Player"))
         {

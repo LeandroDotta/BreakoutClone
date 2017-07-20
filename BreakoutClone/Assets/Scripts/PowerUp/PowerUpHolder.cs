@@ -18,6 +18,11 @@ public class PowerUpHolder : MonoBehaviour {
 
     public void Add(PowerUp powerUp)
     {
+        if(powerUp.type == PowerUp.PowerUpType.Penalty)
+            AudioManager.Instance.Play(AudioManager.Instance.sfxPenalty);
+        else
+            AudioManager.Instance.Play(AudioManager.Instance.sfxBonus);
+
         if(powerUp is TimedPowerUp)
         {
             TimedPowerUp currentPowerUp = gameObject.GetComponentInChildren(powerUp.GetType()) as TimedPowerUp;

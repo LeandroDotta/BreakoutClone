@@ -93,6 +93,8 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
+        AudioManager.Instance.Play(AudioManager.Instance.sfxGameOver);
+
         AddScoreToLeaderBoard(CurrentGame.Score);
 
         SceneManager.LoadScene("TitleScreen");

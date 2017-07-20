@@ -46,8 +46,9 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager Instance { get; set; }
 
-    
+
     public Game CurrentGame { get; set; }
+    public List<LeaderBoardItem> LeaderBoard { get; set; }
 
     public string PlayersName
     {
@@ -92,6 +93,98 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
+        AddScoreToLeaderBoard(CurrentGame.Score);
+
         SceneManager.LoadScene("TitleScreen");
+    }
+
+    public void LoadLeaderBoard()
+    {
+        LeaderBoard = new List<LeaderBoardItem>();
+
+        for(int i = 0; i < 10; i++)
+        {
+            string keyName = string.Format("LeaderBoard[{0}].Name", i);
+            string keyScore = string.Format("LeaderBoard[{0}].Score", i);
+
+            if(PlayerPrefs.HasKey(keyName))
+            {
+                LeaderBoardItem item = new LeaderBoardItem()
+                {
+                    Name = PlayerPrefs.GetString(keyName),
+                    Score = PlayerPrefs.GetInt(keyScore)
+                };
+
+                LeaderBoard.Add(item);
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    public bool AddScoreToLeaderBoard(int score)
+    {
+        bool result = false;
+
+        for(int i = 0; i < 10; i++)
+        {
+            if(LeaderBoard.Count <= i)
+            {
+                LeaderBoard.Add(new LeaderBoardItem(){
+                    Name = PlayersName,
+                    Score = score
+                });
+
+                result = true;
+                break;
+            }
+            else
+            {
+                LeaderBoardItem item = LeaderBoard[i];
+
+                if(score > item.Score)
+                {
+                    LeaderBoard.Insert(i, new LeaderBoardItem(){
+                        Name = PlayersName,
+                        Score = score
+                    });
+
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        if(result)
+        {
+            SaveLeaderBoard();
+        }
+
+        return result;
+    }
+
+    public void SaveLeaderBoard()
+    {
+        for(int i = 0; i < 10; i++)
+        {
+            if(i >= LeaderBoard.Count)
+                break;
+
+            LeaderBoardItem item = LeaderBoard[i];
+
+            string keyName = string.Format("LeaderBoard[{0}].Name", i);
+            string keyScore = string.Format("LeaderBoard[{0}].Score", i);
+
+            PlayerPrefs.SetString(keyName, item.Name);
+            PlayerPrefs.SetInt(keyScore, item.Score);
+        }
+    }
+
+    public class LeaderBoardItem
+    {
+        public string Name { get; set; }
+        public int Score { get; set; }
     }
 }

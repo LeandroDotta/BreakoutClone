@@ -5,16 +5,28 @@ using UnityEngine.UI;
 
 public class TitleScreen : MonoBehaviour {
     private InputField fieldName;
+
+	public Text[] LeaderBoardNames;
+	public Text[] LeaderBoardScores;
     
-	// Use this for initialization
 	void Start () {
         fieldName = transform.Find("FieldName").GetComponent<InputField>();
-
         fieldName.text = GameManager.Instance.PlayersName;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+		GameManager.Instance.LoadLeaderBoard();
+
+		for(int i = 0; i < 10; i++)
+		{
+			if(GameManager.Instance.LeaderBoard.Count > i)
+			{
+				LeaderBoardNames[i].text = string.Format("{0}. {1}", i+1, GameManager.Instance.LeaderBoard[i].Name);
+				LeaderBoardScores[i].text = GameManager.Instance.LeaderBoard[i].Score.ToString();
+			}
+			else
+			{
+				LeaderBoardNames[i].text = "";
+				LeaderBoardScores[i].text = "";
+			}
+		}
 	}
 }

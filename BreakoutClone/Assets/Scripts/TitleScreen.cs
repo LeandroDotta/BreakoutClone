@@ -11,7 +11,7 @@ public class TitleScreen : MonoBehaviour {
     
 	void Start () {
         fieldName = transform.Find("FieldName").GetComponent<InputField>();
-        fieldName.text = GameManager.Instance.PlayersName;
+        fieldName.text = GetComponent<UIEvents>().PlayersName;
 
 		GameManager.Instance.LoadLeaderBoard();
 

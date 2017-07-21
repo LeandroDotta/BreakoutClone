@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,9 +36,12 @@ public class Game
         } 
     }
 
+    public string PlayerName { get; private set; }
+
     public Game(int lifeCount)
     {
         LifeCount = lifeCount;
+        PlayerName = PlayerPrefs.GetString("PlayersName", "Dr. Breakout");
     }
 }
 
@@ -46,21 +50,8 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager Instance { get; set; }
 
-
     public Game CurrentGame { get; set; }
     public List<LeaderBoardItem> LeaderBoard { get; set; }
-
-    public string PlayersName
-    {
-        get
-        {
-            return PlayerPrefs.GetString("PlayersName", "Dr. Breakout");
-        }
-        set
-        {
-            PlayerPrefs.SetString("PlayersName", value);
-        }
-    }
 
     void Awake()
     {
@@ -72,6 +63,7 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 
         CurrentGame = new Game(lifes);
+        LoadLeaderBoard();
     }
 
     public void RestartScene()
@@ -121,9 +113,11 @@ public class GameManager : MonoBehaviour {
             }
             else
             {
-                return;
+                break;
             }
         }
+
+        LeaderBoard = LeaderBoard.OrderByDescending(x => x.Score).ToList();
     }
 
     public bool AddScoreToLeaderBoard(int score)
@@ -135,7 +129,7 @@ public class GameManager : MonoBehaviour {
             if(LeaderBoard.Count <= i)
             {
                 LeaderBoard.Add(new LeaderBoardItem(){
-                    Name = PlayersName,
+                    Name = CurrentGame.PlayerName,
                     Score = score
                 });
 
@@ -149,7 +143,7 @@ public class GameManager : MonoBehaviour {
                 if(score > item.Score)
                 {
                     LeaderBoard.Insert(i, new LeaderBoardItem(){
-                        Name = PlayersName,
+                        Name = CurrentGame.PlayerName,
                         Score = score
                     });
 

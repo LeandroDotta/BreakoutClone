@@ -6,16 +6,37 @@ using UnityEngine.UI;
 public class StageManager : MonoBehaviour {
     public Ball ball;
     public Platform platform;
+    public string nextStage;
+    public bool finalStage = false;
 
     [Header("UI Elements")]
     public Text textLifeCount;
     public Text textScore;
+    public Canvas gameOverScreen;
+    public Canvas victoryScreen;
+    public Canvas pauseScreen;
 
     private int brickCount;
 
     public static StageManager Instance { get; set; }
     public bool IsFirstLaunch { get; set; }
+    public bool IsPaused { get{ return Time.timeScale == 0; } }
+
+    private int _score;
+    public int Score { 
+        get
+        {
+            return _score;
+        } 
+        set
+        {
+            _score = value;
+
+            SetScoreText(value);
+        } 
+    }
     public Transform Barrier { get; set; }
+
 
     void Awake()
     {
@@ -32,10 +53,30 @@ public class StageManager : MonoBehaviour {
         brickCount = GameObject.FindGameObjectsWithTag("Brick").Length;
         Barrier = transform.Find("Barrier");
 
-        SetScoreText(GameManager.Instance.CurrentGame.Score);
+        SetScoreText(Score);
         SetLifeCountText(GameManager.Instance.CurrentGame.LifeCount);
 
         Cursor.visible = false;
+        Time.timeScale = 1;
+    }
+
+    void Update()
+    {
+        if(Input.GetButtonDown("Cancel"))
+        {
+            if(IsPaused)
+                UnPause();
+            else
+                Pause();
+        }
+    }
+
+    public void AddScore(int score)
+    {
+        if(GameManager.Instance.CurrentGame.Mode == GameMode.Hardcore)
+            score *= 2;
+
+        StageManager.Instance.Score += score;
     }
 
     public void ResetBall()
@@ -48,6 +89,41 @@ public class StageManager : MonoBehaviour {
         ball.ResetPosition();
 
         IsFirstLaunch = true;
+    }
+
+    public void GameOver()
+    {
+        AudioManager.Instance.Play(AudioManager.Instance.sfxGameOver);
+
+        Cursor.visible = true;
+        Time.timeScale = 0;
+        gameOverScreen.gameObject.SetActive(true);
+
+        GameManager.Instance.CurrentGame.Score += StageManager.Instance.Score;
+        GameManager.Instance.AddScoreToLeaderBoard(GameManager.Instance.CurrentGame.Score);
+    }
+
+    public void Victory()
+    {
+        //TODO: Tocar som para vitória!
+
+        Cursor.visible = true;
+        Time.timeScale = 0;
+        victoryScreen.gameObject.SetActive(true);
+    }
+
+    public void Pause()
+    {
+        Cursor.visible = true;
+        Time.timeScale = 0;
+        pauseScreen.gameObject.SetActive(true);
+    }
+
+    public void UnPause()
+    {
+        Cursor.visible = false;
+        Time.timeScale = 1;
+        pauseScreen.gameObject.SetActive(false);
     }
 
     public void RemovePowerUpsAtScreen()
@@ -72,7 +148,7 @@ public class StageManager : MonoBehaviour {
             textLifeCount.text = lifeCount.ToString();
 
         if(lifeCount <= 0)
-            GameManager.Instance.GameOver();
+            GameOver();
     }
 
     public void DecreaseBrick()
@@ -80,7 +156,7 @@ public class StageManager : MonoBehaviour {
         brickCount--;
 
         if(brickCount <= 0)
-            GameManager.Instance.GameOver();
+            Victory();
     }
 
     void OnDestroy()

@@ -16,7 +16,7 @@ public class BrickNormal : Brick {
 	
 	protected override void DestroyBrick()
 	{
-		GameManager.Instance.CurrentGame.Score += score;
+        StageManager.Instance.AddScore(score);		
         StageManager.Instance.DecreaseBrick();
 
         if(powerUp != null)

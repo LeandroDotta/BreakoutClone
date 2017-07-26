@@ -4,6 +4,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum GameMode
+{
+    Campaign,
+    Hardcore,
+    Free
+}
 public class Game
 {
     private int _score;
@@ -18,8 +24,8 @@ public class Game
         {
             _score = value;
 
-            if(StageManager.Instance != null)
-                StageManager.Instance.SetScoreText(value);
+            // if(StageManager.Instance != null)
+            //     StageManager.Instance.SetScoreText(value);
         }
     }
     public int LifeCount { 
@@ -37,11 +43,17 @@ public class Game
     }
 
     public string PlayerName { get; private set; }
+    public GameMode Mode { get; set; }
 
-    public Game(int lifeCount)
+    public Game(int lifeCount, GameMode mode)
     {
-        LifeCount = lifeCount;
+        Mode = mode;
         PlayerName = PlayerPrefs.GetString("PlayersName", "Dr. Breakout");
+
+        if(mode == GameMode.Hardcore)
+            LifeCount = 1;
+        else
+            LifeCount = lifeCount;
     }
 }
 
@@ -62,34 +74,14 @@ public class GameManager : MonoBehaviour {
 
         DontDestroyOnLoad(gameObject);
 
-        CurrentGame = new Game(lifes);
+        CurrentGame = new Game(lifes, GameMode.Free);
         LoadLeaderBoard();
     }
 
-    public void RestartScene()
+    public void NewGame(GameMode mode)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-    }
-
-    public void NewGame()
-    {
-        CurrentGame = new Game(lifes);
-
-        SceneManager.LoadScene("Stage 1");
-    }
-
-    public void GameOver()
-    {
-        AudioManager.Instance.Play(AudioManager.Instance.sfxGameOver);
-
-        AddScoreToLeaderBoard(CurrentGame.Score);
-
-        SceneManager.LoadScene("TitleScreen");
+        CurrentGame = new Game(lifes, mode);
+        //SceneManager.LoadScene("Stage 1");
     }
 
     public void LoadLeaderBoard()

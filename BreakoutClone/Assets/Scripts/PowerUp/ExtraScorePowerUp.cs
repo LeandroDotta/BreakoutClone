@@ -9,6 +9,6 @@ public class ExtraScorePowerUp : InstantPowerUp
 
 	protected override void Apply()
 	{
-		GameManager.Instance.CurrentGame.Score += score;
+		StageManager.Instance.Score += score;
 	}
 }

@@ -53,6 +53,8 @@ public class StageManager : MonoBehaviour {
         brickCount = GameObject.FindGameObjectsWithTag("Brick").Length;
         Barrier = transform.Find("Barrier");
 
+        IsFirstLaunch = true;
+
         SetScoreText(Score);
         SetLifeCountText(GameManager.Instance.CurrentGame.LifeCount);
 

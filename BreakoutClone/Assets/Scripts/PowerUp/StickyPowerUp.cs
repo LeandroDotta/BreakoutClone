@@ -12,6 +12,8 @@ public class StickyPowerUp : TimedPowerUp
 	protected override void PowerUpEnd()
 	{
 		StageManager.Instance.platform.IsSticky = false;
-		StageManager.Instance.ball.Launch();
+
+		if(StageManager.Instance.ball.IsLocked)
+			StageManager.Instance.ball.Launch();
 	}
 }

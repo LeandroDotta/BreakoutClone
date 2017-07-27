@@ -19,11 +19,11 @@ public class SlowPowerUp : TimedPowerUp
 	{
 		ball = StageManager.Instance.ball.GetComponent<Ball>();
         ballDefaultSpeed = ball.speed;
-		ball.speed = speed;
+		ball.SetSpeed(speed);
 	}
 
 	protected override void PowerUpEnd()
 	{
-		ball.speed = ballDefaultSpeed;
+		ball.SetSpeed(ballDefaultSpeed);
 	}
 }

@@ -5,31 +5,32 @@ using UnityEngine;
 public class Ball : MonoBehaviour {
 
     public float speed;
-    public Vector2 direction;
-
+    
+    private Vector2 direction;
     private Vector2 startPosition;
     private Rigidbody2D rb2d;
 
-    public bool IsLocked { get; set; }
+    public bool IsLocked 
+    { 
+        get
+        {
+            return rb2d.velocity == Vector2.zero;
+        }
+        set
+        {
+            if(value)
+                rb2d.velocity = Vector2.zero;
+            else
+                rb2d.velocity = direction * speed;
+        } 
+    }
 
-    // Use this for initialization
     void Start () {
         startPosition = transform.position;
         rb2d = GetComponent<Rigidbody2D>();
 
         ResetPosition();
 	}
-
-    private void FixedUpdate()
-    {
-        if(!IsLocked)
-            Move();
-    }
-
-    private void Move()
-    {
-        rb2d.MovePosition(rb2d.position + direction * speed * Time.fixedDeltaTime);
-    }
 
     public void Launch()
     {
@@ -51,6 +52,18 @@ public class Ball : MonoBehaviour {
         transform.SetParent(StageManager.Instance.platform.transform);
     }
 
+    public void SetDirection(Vector2 direction)
+    {
+        this.direction = direction.normalized;
+        rb2d.velocity = this.direction * speed;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+        rb2d.velocity = rb2d.velocity.normalized * speed;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Collider2D coll = collision.collider;
@@ -59,18 +72,13 @@ public class Ball : MonoBehaviour {
         if (coll.CompareTag("Player"))
         {
             Platform platform = coll.gameObject.GetComponent<Platform>();
-            direction = platform.GetDirection(collision.contacts[0].point);
+            SetDirection(platform.GetDirection(collision.contacts[0].point));
 
             if(platform.IsSticky)
             {
                 IsLocked = true;
                 transform.SetParent(platform.transform);
             }
-        }
-        else
-        {
-            Vector2 normal = collision.contacts[0].normal;
-            direction = Vector2.Reflect(direction, normal).normalized;
         }
     }
 }

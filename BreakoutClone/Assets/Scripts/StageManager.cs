@@ -12,9 +12,14 @@ public class StageManager : MonoBehaviour {
     [Header("UI Elements")]
     public Text textLifeCount;
     public Text textScore;
-    public Canvas gameOverScreen;
-    public Canvas victoryScreen;
-    public Canvas pauseScreen;
+
+    public Canvas messageScreen;
+    public Text messageScreenTitle;
+    public Button buttonRestartStage;
+    public Button buttonRestartGame;
+    public Button buttonChooseStage;
+    public Button buttonResume;
+    public Button buttonNextStage;
 
     private int brickCount;
 
@@ -99,7 +104,12 @@ public class StageManager : MonoBehaviour {
 
         Cursor.visible = true;
         Time.timeScale = 0;
-        gameOverScreen.gameObject.SetActive(true);
+        //gameOverScreen.gameObject.SetActive(true);
+        messageScreenTitle.text = "Game Over!";
+        DisableMessageScreenButtons();
+        buttonChooseStage.gameObject.SetActive(GameManager.Instance.CurrentGame.Mode == GameMode.Free);
+        buttonRestartGame.gameObject.SetActive(true);
+        messageScreen.gameObject.SetActive(true);
 
         GameManager.Instance.CurrentGame.Score += StageManager.Instance.Score;
         GameManager.Instance.AddScoreToLeaderBoard(GameManager.Instance.CurrentGame.Score);
@@ -111,21 +121,42 @@ public class StageManager : MonoBehaviour {
 
         Cursor.visible = true;
         Time.timeScale = 0;
-        victoryScreen.gameObject.SetActive(true);
+        
+        messageScreenTitle.text = "Votoria!";
+        DisableMessageScreenButtons();
+        buttonChooseStage.gameObject.SetActive(GameManager.Instance.CurrentGame.Mode == GameMode.Free);
+        buttonRestartGame.gameObject.SetActive(GameManager.Instance.CurrentGame.Mode != GameMode.Hardcore);
+        buttonRestartStage.interactable = 
+            GameManager.Instance.CurrentGame.Mode == GameMode.Free || 
+            (GameManager.Instance.CurrentGame.Mode == GameMode.Campaign || GameManager.Instance.CurrentGame.LifeCount > 1);
+        buttonNextStage.gameObject.SetActive(true);
+
+        messageScreen.gameObject.SetActive(true);
     }
 
     public void Pause()
     {
         Cursor.visible = true;
         Time.timeScale = 0;
-        pauseScreen.gameObject.SetActive(true);
+
+        messageScreenTitle.text = "Pausado";
+        DisableMessageScreenButtons();
+        buttonChooseStage.gameObject.SetActive(GameManager.Instance.CurrentGame.Mode == GameMode.Free);
+        buttonResume.gameObject.SetActive(true);
+        buttonRestartGame.gameObject.SetActive(GameManager.Instance.CurrentGame.Mode != GameMode.Hardcore);
+        buttonRestartStage.interactable = 
+            GameManager.Instance.CurrentGame.Mode == GameMode.Free || 
+            (GameManager.Instance.CurrentGame.Mode == GameMode.Campaign || GameManager.Instance.CurrentGame.LifeCount > 1);
+
+        messageScreen.gameObject.SetActive(true);
     }
 
     public void UnPause()
     {
         Cursor.visible = false;
         Time.timeScale = 1;
-        pauseScreen.gameObject.SetActive(false);
+        
+        messageScreen.gameObject.SetActive(false);
     }
 
     public void RemovePowerUpsAtScreen()
@@ -164,5 +195,14 @@ public class StageManager : MonoBehaviour {
     void OnDestroy()
     {
         Cursor.visible = true;
+    }
+
+    private void DisableMessageScreenButtons()
+    {
+        buttonChooseStage.gameObject.SetActive(false);
+        buttonNextStage.gameObject.SetActive(false);
+        buttonRestartGame.gameObject.SetActive(false);
+        buttonRestartStage.gameObject.SetActive(false);
+        buttonResume.gameObject.SetActive(false);
     }
 }

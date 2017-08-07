@@ -13,7 +13,7 @@ public class StickyPowerUp : TimedPowerUp
 	{
 		StageManager.Instance.platform.IsSticky = false;
 
-		if(StageManager.Instance.ball.IsLocked)
+		if(!StageManager.Instance.ball.Movement.enabled)
 			StageManager.Instance.ball.Launch();
 	}
 }

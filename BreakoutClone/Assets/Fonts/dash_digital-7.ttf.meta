@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: c2c12ff0d86c3464f8365870205bb48b
+timeCreated: 1501882621
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -1
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Dash Digital-7
+  fontNames:
+  - Dash Digital-7
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

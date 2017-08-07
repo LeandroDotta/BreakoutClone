@@ -45,7 +45,7 @@ public class PlatformController : MonoBehaviour {
         }
 
         // Lançar a bola
-        if((Input.GetButtonDown("Action") || Input.GetMouseButtonUp(0)) && StageManager.Instance.ball.IsLocked)
+        if((Input.GetButtonDown("Action") || Input.GetMouseButtonUp(0)) && !StageManager.Instance.ball.Movement.enabled)
         {
             if(StageManager.Instance.IsFirstLaunch)
             {

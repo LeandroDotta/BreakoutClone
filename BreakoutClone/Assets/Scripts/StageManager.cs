@@ -122,7 +122,7 @@ public class StageManager : MonoBehaviour {
         Cursor.visible = true;
         Time.timeScale = 0;
         
-        messageScreenTitle.text = "Votoria!";
+        messageScreenTitle.text = "Vitoria!";
         DisableMessageScreenButtons();
         buttonChooseStage.gameObject.SetActive(GameManager.Instance.CurrentGame.Mode == GameMode.Free);
         buttonRestartGame.gameObject.SetActive(GameManager.Instance.CurrentGame.Mode != GameMode.Hardcore);

@@ -37,10 +37,10 @@ public class Ball : MonoBehaviour {
         Movement.enabled = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
+        print("OnCollisionEnter2D - Ball");
         Collider2D coll = collision.collider;
-        AudioManager.Instance.Play(AudioManager.Instance.sfxBounce);
 
         if (coll.CompareTag("Player"))
         {
@@ -53,5 +53,5 @@ public class Ball : MonoBehaviour {
                 transform.SetParent(platform.transform);
             }
         }
-    }
+    }   
 }

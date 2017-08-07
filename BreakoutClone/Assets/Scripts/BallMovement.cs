@@ -7,12 +7,19 @@ public class BallMovement : MonoBehaviour {
 
 	[SerializeField]
 	private Vector2 direction = new Vector2(1, 1);
-	private Rigidbody2D rb2d;
+
+	[HideInInspector]
+	public Rigidbody2D rb2d;
 
 	void Start()
 	{
 		rb2d = GetComponent<Rigidbody2D>();
 		SetMovement(true);
+	}
+
+	void Update()
+	{
+		//print(rb2d.velocity.normalized + " - Direction: " + direction.normalized);
 	}
 
 	void OnEnable()
@@ -47,4 +54,28 @@ public class BallMovement : MonoBehaviour {
 				rb2d.velocity = Vector2.zero;
 		}
 	}
+
+	void OnCollisionEnter2D(Collision2D collision)
+    {
+		print("OnCollisionEnter2D - BallMovement");
+        AudioManager.Instance.Play(AudioManager.Instance.sfxBounce);
+
+		Vector2 direction = rb2d.velocity.normalized;
+
+		// Angulo mínimo para o movimento vertical
+		if(direction.x > -0.1f && direction.x < 0.1f)
+		{
+			print(direction);
+			direction.x = Mathf.Sign(direction.x) == -1 ? -0.1f : 0.1f;
+		}
+
+		// Ângulo mínimo para o moviemento horizontal
+		if(direction.y > -0.3f && direction.y < 0.3f)
+		{
+			print(direction);
+			direction.x = Mathf.Sign(direction.y) == -1 ? -0.3f : 0.3f;
+		}
+
+		SetDirection(direction);
+    }
 }

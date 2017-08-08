@@ -57,9 +57,6 @@ public class BallMovement : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision)
     {
-		print("OnCollisionEnter2D - BallMovement");
-        AudioManager.Instance.Play(AudioManager.Instance.sfxBounce);
-
 		Vector2 direction = rb2d.velocity.normalized;
 
 		// Angulo mínimo para o movimento vertical

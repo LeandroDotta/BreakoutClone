@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
-
 	[Header("SFX")]
 	public AudioClip sfxBonus;
 	public AudioClip sfxBounce;
@@ -14,8 +13,20 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip sfxUINavigate;
 	
 	public static AudioManager Instance { get; private set; }
+	public bool IsEnabled { get; set; }
+	public bool IsMusicEnabled { 
+		get
+		{
+			return musicAudioSource.enabled;
+		} 
+		set
+		{
+			musicAudioSource.enabled = value;
+		} 
+	}
 
 	private AudioSource source;
+	private AudioSource musicAudioSource;
 
 	void Awake()
     {
@@ -24,16 +35,21 @@ public class AudioManager : MonoBehaviour {
         else if (Instance != this)
             Destroy(gameObject);
 
-		//DontDestroyOnLoad(gameObject);
+		DontDestroyOnLoad(gameObject);
 	}
 
 	void Start()
 	{
 		source = GetComponent<AudioSource>();
+		musicAudioSource = transform.Find("Music").GetComponent<AudioSource>();
+		
+		print(musicAudioSource.name);
+		IsEnabled = true;
 	}
 
 	public void Play(AudioClip audio)
 	{
-		source.PlayOneShot(audio);
+		if(IsEnabled)
+			source.PlayOneShot(audio);
 	}
 }

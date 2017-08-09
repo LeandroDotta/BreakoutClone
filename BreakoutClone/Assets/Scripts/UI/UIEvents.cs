@@ -67,4 +67,19 @@ public class UIEvents : MonoBehaviour
         else
             SceneManager.LoadScene("Stage 1");
     }
+
+    public void ToggleSound(bool isOn)
+    {
+        AudioManager.Instance.IsEnabled = isOn;
+    }
+
+    public void ToggleMusic(bool isOn)
+    {
+        AudioManager.Instance.IsMusicEnabled = isOn;
+    }
+
+    public void PlayAudio(AudioClip audio)
+    {
+        AudioManager.Instance.Play(audio);
+    }
 }

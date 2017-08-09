@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerUpHolder : MonoBehaviour {
+public class PowerUpHolder : MonoBehaviour { 
 	public static PowerUpHolder Instance { get; set; }
 
     void Awake()
@@ -15,6 +15,10 @@ public class PowerUpHolder : MonoBehaviour {
 
         //DontDestroyOnLoad(gameObject);
 	}
+
+    void Start()
+    {
+    }
 
     public void Add(PowerUp powerUp)
     {

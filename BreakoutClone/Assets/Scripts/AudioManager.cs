@@ -43,7 +43,6 @@ public class AudioManager : MonoBehaviour {
 		source = GetComponent<AudioSource>();
 		musicAudioSource = transform.Find("Music").GetComponent<AudioSource>();
 		
-		print(musicAudioSource.name);
 		IsEnabled = true;
 	}
 

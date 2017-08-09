@@ -57,22 +57,25 @@ public class BallMovement : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision)
     {
-		Vector2 direction = rb2d.velocity.normalized;
-
-		// Angulo mínimo para o movimento vertical
-		if(direction.x > -0.1f && direction.x < 0.1f)
+		if(!collision.collider.CompareTag("Player"))
 		{
-			print(direction);
-			direction.x = Mathf.Sign(direction.x) == -1 ? -0.1f : 0.1f;
-		}
+			Vector2 direction = rb2d.velocity.normalized;
 
-		// Ângulo mínimo para o moviemento horizontal
-		if(direction.y > -0.3f && direction.y < 0.3f)
-		{
-			print(direction);
-			direction.x = Mathf.Sign(direction.y) == -1 ? -0.3f : 0.3f;
-		}
+			// Angulo mínimo para o movimento vertical
+			if(direction.x > -0.1f && direction.x < 0.1f)
+			{
+				print(direction);
+				direction.x = Mathf.Sign(direction.x) == -1 ? -0.1f : 0.1f;
+			}
 
-		SetDirection(direction);
+			// Ângulo mínimo para o moviemento horizontal
+			if(direction.y > -0.3f && direction.y < 0.3f)
+			{
+				print(direction);
+				direction.x = Mathf.Sign(direction.y) == -1 ? -0.3f : 0.3f;
+			}
+
+			SetDirection(direction);
+		}
     }
 }

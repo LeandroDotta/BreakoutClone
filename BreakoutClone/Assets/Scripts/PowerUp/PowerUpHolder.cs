@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerUpHolder : MonoBehaviour { 
+public class PowerUpHolder : MonoBehaviour 
+{ 
+    private GameObject[] slots;
 	public static PowerUpHolder Instance { get; set; }
 
     void Awake()
@@ -18,6 +20,11 @@ public class PowerUpHolder : MonoBehaviour {
 
     void Start()
     {
+        slots = new GameObject[transform.childCount];
+        for(int i = 0; i < slots.Length; i++)
+        {
+            slots[i] = transform.GetChild(i).gameObject;
+        }
     }
 
     public void Add(PowerUp powerUp)
@@ -38,9 +45,12 @@ public class PowerUpHolder : MonoBehaviour {
             }
         }
 
+        Transform slot = slots[GetNextFreeSlotIndex()].transform;
+
         PowerUp powerUpInstance = Instantiate(powerUp);
         powerUpInstance.name = powerUp.name;
-        powerUpInstance.transform.SetParent(transform);
+        powerUpInstance.transform.position = slot.position;
+        powerUpInstance.transform.SetParent(slot);
     }
 
     public void Remove<T>()
@@ -61,5 +71,16 @@ public class PowerUpHolder : MonoBehaviour {
         {
             tpu.Interrupt();
         }
+    }
+
+    private int GetNextFreeSlotIndex()
+    {
+        for(int i = 0; i < slots.Length; i++)
+        {
+            if(slots[i].transform.childCount == 0)
+                return i;
+        }
+
+        return -1;
     }
 }

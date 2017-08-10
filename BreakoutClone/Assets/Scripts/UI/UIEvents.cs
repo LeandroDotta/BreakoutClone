@@ -65,7 +65,7 @@ public class UIEvents : MonoBehaviour
         if(GameManager.Instance.CurrentGame.Mode == GameMode.Free)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         else
-            SceneManager.LoadScene("Stage 1");
+            SceneManager.LoadScene("01 - Stage");
     }
 
     public void ToggleSound(bool isOn)

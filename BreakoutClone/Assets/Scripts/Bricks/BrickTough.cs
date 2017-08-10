@@ -15,9 +15,11 @@ public class BrickTough : BrickNormal
 	protected SpriteRenderer spriteRenderer;
 	
 
-	void Start()
+	protected override void Start()
 	{
-		spriteRenderer = GetComponent<SpriteRenderer>();
+		base.Start();
+
+		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
 		UpdateSprite();
 	}
@@ -41,6 +43,9 @@ public class BrickTough : BrickNormal
 		}
 
 		UpdateSprite();
+
+		if(anim != null)
+			anim.SetTrigger("getHit");
 	}
 
 	protected void UpdateSprite()

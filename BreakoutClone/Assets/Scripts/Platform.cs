@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class Platform : MonoBehaviour {    
 
     public float minSize;
     public float maxSize;
+
+    public SpriteAtlas sprites;
 
     private static Vector2[] directions = new Vector2[]
     {
@@ -22,17 +25,39 @@ public class Platform : MonoBehaviour {
     public static Vector2[] Directions { get { return directions; } }
     
     public bool IsSticky { get; set; }
+    private bool _frozen;
+    public bool IsFrozen { 
+        get
+        {
+            return _frozen;
+        } 
+        set
+        {
+            _frozen = value;
+            controller.enabled = !value;
+
+            print(sprites.GetSprite("PlatformFrozen"));
+            print(sprites.GetSprite("Platform"));
+
+            if(_frozen)
+                spriteRenderer.sprite = sprites.GetSprite("PlatformFrozen");
+            else
+                spriteRenderer.sprite = sprites.GetSprite("Platform");
+        } 
+    }
 
     private float defaultSize;
     private Vector2 startPosition;
     private Collider2D coll;
     private SpriteRenderer spriteRenderer;
+    private PlatformController controller;
 
     void Start()
     {
         startPosition = transform.position;
         coll = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        controller = GetComponent<PlatformController>();
 
         defaultSize = spriteRenderer.size.x;
     }

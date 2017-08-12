@@ -34,7 +34,7 @@ public class BrickTough : BrickNormal
 
 	protected virtual void RemoveLife()
 	{
-		lifes--;
+		lifes--;	
 
 		if(lifes <= 0)
 		{

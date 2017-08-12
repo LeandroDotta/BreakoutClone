@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: c415693cd31a55245914bbd78f3a78d4
-timeCreated: 1501626692
+guid: 3023fb369c66af7449786bcff639470f
+timeCreated: 1502483347
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spritePixelsToUnits: 512
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: 0
+  spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
   maxTextureSizeSet: 0
@@ -98,22 +98,7 @@ TextureImporter:
   spriteSheet:
     serializedVersion: 2
     sprites: []
-    outline:
-    - - {x: 628.45935, y: 249.1037}
-      - {x: 596.7627, y: 256}
-      - {x: -582.2663, y: 256}
-      - {x: -615.3933, y: 240.23984}
-      - {x: -636.99927, y: 189.17166}
-      - {x: -646.9982, y: 76.42151}
-      - {x: -646.1473, y: -26.397476}
-      - {x: -643.679, y: -151.25221}
-      - {x: -625.64905, y: -234.552}
-      - {x: -588.25793, y: -256}
-      - {x: 592.6315, y: -256}
-      - {x: 622.933, y: -227.10406}
-      - {x: 639.8535, y: -187.65114}
-      - {x: 649, y: -52.945328}
-      - {x: 647.194, y: 138.61023}
+    outline: []
     physicsShape: []
   spritePackingTag: 
   userData: 

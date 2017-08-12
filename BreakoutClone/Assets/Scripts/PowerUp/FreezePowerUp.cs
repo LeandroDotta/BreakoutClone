@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class FreezePowerUp : TimedPowerUp 
 {
-	private PlatformController controller;
+	private Platform platform;
 
 	protected override void PowerUpStart()
 	{
-		controller = StageManager.Instance.platform.GetComponent<PlatformController>();
-        controller.enabled = false;
+		platform = StageManager.Instance.platform.GetComponent<Platform>();
+        platform.IsFrozen = true;
 	}
 
 	protected override void PowerUpEnd()
 	{
-		controller.enabled = true;
+		platform.IsFrozen = false;
 	}
 }
